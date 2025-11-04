@@ -1,6 +1,6 @@
 import { Movie, MovieDetail, TMDBResponse, Cast, Crew, Video, Review } from '@/types/movie';
 
-const TMDB_API_KEY = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4ZTdkNjY4ZmNhMWQ1NzI0Y2I0MTljYzQxYWVmMmMwZiIsIm5iZiI6MTczMDcxMzE5MS4wMDczNTgzLCJzdWIiOiI2NzI2YjFiZjA1Y2MxZDRiMWQ4NWVkZGYiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.Mfc6VqQIvN_AGbDOX2W5F-dQxIiXq5pCfHRgQe9HvG8';
+const TMDB_API_KEY = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1ZmQxYjQ3MDNlZmQ3OWNmOThhOGU1NDc4NzY3MzAzOSIsIm5iZiI6MTc2MjIyOTE5OC45NzIsInN1YiI6IjY5MDk3YmNlZTA1MzMyMjFlODcwYzk1MyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Kw65vJakjG6MndV4_SuzMx2xTnQh0ozoTzcfw9rUQTI';
 const BASE_URL = 'https://api.themoviedb.org/3';
 
 const headers = {
