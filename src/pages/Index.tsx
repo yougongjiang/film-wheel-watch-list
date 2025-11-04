@@ -127,41 +127,39 @@ const Index = () => {
           </div>
         )}
 
-        {allMovies.length > 0 && (
-          <>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
-              {allMovies.map((movie) => (
-                <MovieCard
-                  key={movie.id}
-                  movie={movie}
-                  isInWatchlist={isInWatchlist(movie.id)}
-                  onToggleWatchlist={handleToggleWatchlist}
-                />
-              ))}
+{allMovies.length > 0 && (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
+          {allMovies.map((movie) => (
+            <MovieCard
+              key={movie.id}
+              movie={movie}
+              isInWatchlist={isInWatchlist(movie.id)}
+              onToggleWatchlist={handleToggleWatchlist}
+            />
+          ))}
+        </div>
+      )}
+      
+      {/* Infinite Scroll Sentinel & Loading Indicator */}
+      {hasMore && (
+        <div ref={sentinelRef} className="flex justify-center mt-12 mb-8 min-h-[100px]">
+          {isLoading && page > 1 ? (
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <Loader2 className="h-5 w-5 animate-spin" />
+              <span>加载更多电影...</span>
             </div>
+          ) : (
+            <div className="h-px w-full" />
+          )}
+        </div>
+      )}
 
-            {/* Infinite Scroll Sentinel & Loading Indicator */}
-            {hasMore && (
-              <div ref={sentinelRef} className="flex justify-center mt-12 mb-8 min-h-[100px]">
-                {isLoading && page > 1 ? (
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <Loader2 className="h-5 w-5 animate-spin" />
-                    <span>加载更多电影...</span>
-                  </div>
-                ) : (
-                  <div className="h-px w-full" />
-                )}
-              </div>
-            )}
-
-            {/* End of Results */}
-            {!hasMore && allMovies.length > 0 && (
-              <div className="text-center py-8 text-muted-foreground">
-                <p>已加载所有电影</p>
-              </div>
-            )}
-          </>
-        )}
+      {/* End of Results */}
+      {!hasMore && allMovies.length > 0 && (
+        <div className="text-center py-8 text-muted-foreground">
+          <p>已加载所有电影</p>
+        </div>
+      )}
       </main>
     </div>
   );
