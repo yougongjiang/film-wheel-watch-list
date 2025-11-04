@@ -19,8 +19,19 @@ export function useInfiniteScroll({
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[]) => {
       const target = entries[0];
+      console.log('🔍 IntersectionObserver triggered:', {
+        isIntersecting: target.isIntersecting,
+        isLoading,
+        hasMore,
+        boundingClientRect: target.boundingClientRect,
+        intersectionRatio: target.intersectionRatio
+      });
+      
       if (target.isIntersecting && !isLoading && hasMore) {
+        console.log('✅ Loading more content...');
         onLoadMore();
+      } else {
+        console.log('❌ Not loading:', { isIntersecting: target.isIntersecting, isLoading, hasMore });
       }
     },
     [isLoading, hasMore, onLoadMore]
@@ -33,12 +44,16 @@ export function useInfiniteScroll({
       threshold: 0
     };
 
+    console.log('🎯 Setting up IntersectionObserver with options:', options);
     observerRef.current = new IntersectionObserver(handleObserver, options);
 
     const currentSentinel = sentinelRef.current;
     
     if (currentSentinel) {
+      console.log('📍 Observing sentinel element:', currentSentinel);
       observerRef.current.observe(currentSentinel);
+    } else {
+      console.warn('⚠️ Sentinel element not found!');
     }
 
     return () => {

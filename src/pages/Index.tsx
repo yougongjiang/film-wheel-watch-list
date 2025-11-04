@@ -56,6 +56,8 @@ const Index = () => {
 
   const hasMore = data ? page < data.total_pages : false;
   
+  console.log('📊 Infinite Scroll State:', { page, hasMore, isLoading, totalPages: data?.total_pages, moviesCount: allMovies.length });
+  
   const sentinelRef = useInfiniteScroll({
     onLoadMore: handleLoadMore,
     isLoading,
