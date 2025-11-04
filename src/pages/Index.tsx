@@ -140,12 +140,14 @@ const Index = () => {
 
             {/* Infinite Scroll Sentinel & Loading Indicator */}
             {hasMore && (
-              <div ref={sentinelRef} className="flex justify-center mt-12 mb-8">
-                {isLoading && page > 1 && (
+              <div ref={sentinelRef} className="flex justify-center mt-12 mb-8 min-h-[100px]">
+                {isLoading && page > 1 ? (
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <Loader2 className="h-5 w-5 animate-spin" />
                     <span>加载更多电影...</span>
                   </div>
+                ) : (
+                  <div className="h-px w-full" />
                 )}
               </div>
             )}

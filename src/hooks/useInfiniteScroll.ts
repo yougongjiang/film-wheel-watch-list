@@ -29,18 +29,21 @@ export function useInfiniteScroll({
   useEffect(() => {
     const options = {
       root: null,
-      rootMargin: `${threshold}px`,
-      threshold: 0.1
+      rootMargin: `0px 0px ${threshold}px 0px`,
+      threshold: 0
     };
 
     observerRef.current = new IntersectionObserver(handleObserver, options);
 
-    if (sentinelRef.current) {
-      observerRef.current.observe(sentinelRef.current);
+    const currentSentinel = sentinelRef.current;
+    
+    if (currentSentinel) {
+      observerRef.current.observe(currentSentinel);
     }
 
     return () => {
-      if (observerRef.current) {
+      if (observerRef.current && currentSentinel) {
+        observerRef.current.unobserve(currentSentinel);
         observerRef.current.disconnect();
       }
     };
