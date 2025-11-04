@@ -6,6 +6,7 @@ import { SearchBar } from '@/components/SearchBar';
 import { MovieCard } from '@/components/MovieCard';
 import { Header } from '@/components/Header';
 import { useWatchlist } from '@/hooks/useWatchlist';
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -47,11 +48,20 @@ const Index = () => {
     setSearchQuery(query);
   }, []);
 
-  const handleLoadMore = () => {
-    if (data && page < data.total_pages) {
+  const handleLoadMore = useCallback(() => {
+    if (data && page < data.total_pages && !isLoading) {
       setPage(prev => prev + 1);
     }
-  };
+  }, [data, page, isLoading]);
+
+  const hasMore = data ? page < data.total_pages : false;
+  
+  const sentinelRef = useInfiniteScroll({
+    onLoadMore: handleLoadMore,
+    isLoading,
+    hasMore,
+    threshold: 800 // Trigger 800px before bottom
+  });
 
   const handleToggleWatchlist = useCallback((movie: Movie) => {
     if (isInWatchlist(movie.id)) {
@@ -128,24 +138,22 @@ const Index = () => {
               ))}
             </div>
 
-            {/* Load More */}
-            {data && page < data.total_pages && (
-              <div className="flex justify-center mt-12">
-                <Button
-                  onClick={handleLoadMore}
-                  disabled={isLoading}
-                  size="lg"
-                  className="gap-2"
-                >
-                  {isLoading ? (
-                    <>
-                      <Loader2 className="h-5 w-5 animate-spin" />
-                      加载中...
-                    </>
-                  ) : (
-                    '加载更多'
-                  )}
-                </Button>
+            {/* Infinite Scroll Sentinel & Loading Indicator */}
+            {hasMore && (
+              <div ref={sentinelRef} className="flex justify-center mt-12 mb-8">
+                {isLoading && page > 1 && (
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                    <span>加载更多电影...</span>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* End of Results */}
+            {!hasMore && allMovies.length > 0 && (
+              <div className="text-center py-8 text-muted-foreground">
+                <p>已加载所有电影</p>
               </div>
             )}
           </>
